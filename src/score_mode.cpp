@@ -32,3 +32,8 @@ void ScoreMode::onPrimaryLongPress()
 void ScoreMode::onSecondaryPress()
 {
 }
+
+void ScoreMode::reset()
+{
+    getScore() = 0;
+}

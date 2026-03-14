@@ -32,3 +32,8 @@ void CounterMode::onPrimaryLongPress()
 void CounterMode::onSecondaryPress()
 {
 }
+
+void CounterMode::reset()
+{
+    getCounter() = 0;
+}

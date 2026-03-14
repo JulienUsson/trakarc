@@ -10,5 +10,6 @@ public:
     virtual void onPrimaryPress() = 0;
     virtual void onPrimaryLongPress() = 0;
     virtual void onSecondaryPress() = 0;
+    virtual void reset() = 0;
     virtual const char *label() = 0;
 };

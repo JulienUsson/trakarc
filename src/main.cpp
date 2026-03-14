@@ -72,6 +72,7 @@ void loop()
     if (M5.BtnPWR.wasPressed())
     {
         currentModeIndex = (currentModeIndex + 1) % MODE_COUNT;
+        modes[currentModeIndex]->reset();
         drawScreen();
         lastActivity = millis();
     }

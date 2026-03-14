@@ -9,6 +9,7 @@ public:
     void onPrimaryPress() override;
     void onPrimaryLongPress() override;
     void onSecondaryPress() override;
+    void reset() override;
     const char *label() override { return "B"; }
 
 private:
