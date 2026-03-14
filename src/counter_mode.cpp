@@ -1,10 +1,19 @@
 #include "counter_mode.h"
 
-RTC_DATA_ATTR unsigned int counterValue = 0;
-
-unsigned int &CounterMode::getCounter()
+void CounterMode::load()
 {
-    return counterValue;
+    Preferences prefs;
+    prefs.begin("counter", true);
+    counter = prefs.getUInt("value", 0);
+    prefs.end();
+}
+
+void CounterMode::save()
+{
+    Preferences prefs;
+    prefs.begin("counter", false);
+    prefs.putUInt("value", counter);
+    prefs.end();
 }
 
 void CounterMode::draw()
@@ -16,17 +25,19 @@ void CounterMode::draw()
     M5.Lcd.setTextColor(WHITE);
     M5.Lcd.setTextSize(5);
     M5.Lcd.setCursor(60, 50);
-    M5.Lcd.println(getCounter());
+    M5.Lcd.println(counter);
 }
 
 void CounterMode::onPrimaryPress()
 {
-    getCounter()++;
+    counter++;
+    save();
 }
 
 void CounterMode::onPrimaryLongPress()
 {
-    getCounter() = 0;
+    counter = 0;
+    save();
 }
 
 void CounterMode::onSecondaryPress()
@@ -35,5 +46,6 @@ void CounterMode::onSecondaryPress()
 
 void CounterMode::reset()
 {
-    getCounter() = 0;
+    counter = 0;
+    save();
 }

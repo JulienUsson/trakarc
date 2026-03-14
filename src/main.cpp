@@ -1,20 +1,22 @@
 #include <M5StickCPlus2.h>
+#include <Preferences.h>
 #include "counter_mode.h"
 #include "score_mode.h"
+#include "Arduino.h"
 
-const unsigned long LONG_PRESS_MS = 2000;
-const unsigned long SLEEP_TIMEOUT_MS = 8000;
-
-RTC_DATA_ATTR int currentModeIndex = 0;
+const unsigned long SLEEP_TIMEOUT_MS = 5000;
 
 CounterMode counterMode;
 ScoreMode scoreMode;
 Mode *modes[] = {&counterMode, &scoreMode};
 const int MODE_COUNT = sizeof(modes) / sizeof(modes[0]);
+int currentModeIndex = 0;
 
 unsigned long lastActivity = 0;
-unsigned long btnAPressStart = 0;
-bool btnALongPressHandled = false;
+
+int loadMode();
+void saveMode(int mode);
+void sleep();
 
 void drawScreen()
 {
@@ -33,57 +35,85 @@ void setup()
     auto cfg = M5.config();
     M5.begin(cfg);
 
+    currentModeIndex = loadMode();
+
+    for (int i = 0; i < MODE_COUNT; i++)
+        modes[i]->load();
+
     M5.Lcd.setRotation(1);
     drawScreen();
     lastActivity = millis();
 }
-
 void loop()
 {
     M5.update();
 
-    if (M5.BtnA.wasPressed())
-    {
-        btnAPressStart = millis();
-        btnALongPressHandled = false;
-        lastActivity = millis();
-    }
-
-    if (M5.BtnA.isPressed() && !btnALongPressHandled && (millis() - btnAPressStart >= LONG_PRESS_MS))
+    if (M5.BtnA.isHolding())
     {
         modes[currentModeIndex]->onPrimaryLongPress();
         drawScreen();
-        btnALongPressHandled = true;
     }
 
-    if (M5.BtnA.wasReleased() && !btnALongPressHandled)
+    if (M5.BtnA.wasClicked())
     {
         modes[currentModeIndex]->onPrimaryPress();
+        lastActivity = millis();
         drawScreen();
     }
 
     if (M5.BtnB.wasPressed())
     {
         modes[currentModeIndex]->onSecondaryPress();
-        drawScreen();
         lastActivity = millis();
+        drawScreen();
     }
 
-    if (M5.BtnPWR.wasPressed())
+    if (M5.BtnPWR.wasClicked())
     {
         currentModeIndex = (currentModeIndex + 1) % MODE_COUNT;
-        modes[currentModeIndex]->reset();
-        drawScreen();
+        saveMode(currentModeIndex);
         lastActivity = millis();
+        drawScreen();
     }
 
     if (millis() - lastActivity >= SLEEP_TIMEOUT_MS)
     {
-        M5.Lcd.fillScreen(BLACK);
-        M5.Lcd.sleep();
-        esp_sleep_enable_ext0_wakeup(GPIO_NUM_37, LOW);
-        esp_deep_sleep_start();
+        sleep();
     }
 
     delay(10);
+}
+
+int loadMode()
+{
+    Preferences prefs;
+    prefs.begin("app", true);
+    int mode = prefs.getInt("mode", 0);
+    prefs.end();
+    return mode;
+}
+
+void saveMode(int mode)
+{
+    Preferences prefs;
+    prefs.begin("app", false);
+    prefs.putInt("mode", mode);
+    prefs.end();
+}
+
+void sleep()
+{
+    M5.Display.sleep();
+    M5.Display.waitDisplay();
+    gpio_wakeup_enable(GPIO_NUM_37, GPIO_INTR_LOW_LEVEL);
+    esp_sleep_enable_gpio_wakeup();
+    esp_light_sleep_start();
+    while (digitalRead(GPIO_NUM_37) == LOW)
+    {
+        delay(10);
+    }
+    M5.Lcd.wakeup();
+    M5.update();
+    drawScreen();
+    lastActivity = millis();
 }

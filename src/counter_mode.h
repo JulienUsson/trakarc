@@ -5,6 +5,8 @@
 class CounterMode : public Mode
 {
 public:
+    void load() override;
+    void save() override;
     void draw() override;
     void onPrimaryPress() override;
     void onPrimaryLongPress() override;
@@ -13,5 +15,5 @@ public:
     const char *label() override { return "A"; }
 
 private:
-    static unsigned int &getCounter();
+    unsigned int counter = 0;
 };

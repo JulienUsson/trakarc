@@ -1,10 +1,19 @@
 #include "score_mode.h"
 
-RTC_DATA_ATTR unsigned int scoreValue = 0;
-
-unsigned int &ScoreMode::getScore()
+void ScoreMode::load()
 {
-    return scoreValue;
+    Preferences prefs;
+    prefs.begin("score", true);
+    score = prefs.getUInt("value", 0);
+    prefs.end();
+}
+
+void ScoreMode::save()
+{
+    Preferences prefs;
+    prefs.begin("score", false);
+    prefs.putUInt("value", score);
+    prefs.end();
 }
 
 void ScoreMode::draw()
@@ -16,17 +25,19 @@ void ScoreMode::draw()
     M5.Lcd.setTextColor(WHITE);
     M5.Lcd.setTextSize(5);
     M5.Lcd.setCursor(60, 50);
-    M5.Lcd.println(getScore());
+    M5.Lcd.println(score);
 }
 
 void ScoreMode::onPrimaryPress()
 {
-    getScore()++;
+    score++;
+    save();
 }
 
 void ScoreMode::onPrimaryLongPress()
 {
-    getScore() = 0;
+    score = 0;
+    save();
 }
 
 void ScoreMode::onSecondaryPress()
@@ -35,5 +46,6 @@ void ScoreMode::onSecondaryPress()
 
 void ScoreMode::reset()
 {
-    getScore() = 0;
+    score = 0;
+    save();
 }
