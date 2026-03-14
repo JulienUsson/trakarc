@@ -1,25 +1,31 @@
 #include <M5StickCPlus2.h>
+#include "counter_mode.h"
+#include "score_mode.h"
 
 const unsigned long LONG_PRESS_MS = 2000;
 const unsigned long SLEEP_TIMEOUT_MS = 8000;
 
-RTC_DATA_ATTR unsigned int counter = 0;
-unsigned long lastActivity = 0;
+RTC_DATA_ATTR int currentModeIndex = 0;
 
+CounterMode counterMode;
+ScoreMode scoreMode;
+Mode *modes[] = {&counterMode, &scoreMode};
+const int MODE_COUNT = sizeof(modes) / sizeof(modes[0]);
+
+unsigned long lastActivity = 0;
 unsigned long btnAPressStart = 0;
 bool btnALongPressHandled = false;
 
-void drawCounter()
+void drawScreen()
 {
     M5.Lcd.fillScreen(BLACK);
-    M5.Lcd.setTextColor(YELLOW);
+
+    M5.Lcd.setTextColor(WHITE);
     M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.println("Compteur");
-    M5.Lcd.setTextColor(GREEN);
-    M5.Lcd.setTextSize(5);
-    M5.Lcd.setCursor(60, 50);
-    M5.Lcd.println(counter);
+    M5.Lcd.setCursor(220, 10);
+    M5.Lcd.print(modes[currentModeIndex]->label());
+
+    modes[currentModeIndex]->draw();
 }
 
 void setup()
@@ -28,7 +34,7 @@ void setup()
     M5.begin(cfg);
 
     M5.Lcd.setRotation(1);
-    drawCounter();
+    drawScreen();
     lastActivity = millis();
 }
 
@@ -45,15 +51,29 @@ void loop()
 
     if (M5.BtnA.isPressed() && !btnALongPressHandled && (millis() - btnAPressStart >= LONG_PRESS_MS))
     {
-        counter = 0;
-        drawCounter();
+        modes[currentModeIndex]->onPrimaryLongPress();
+        drawScreen();
         btnALongPressHandled = true;
     }
 
     if (M5.BtnA.wasReleased() && !btnALongPressHandled)
     {
-        counter++;
-        drawCounter();
+        modes[currentModeIndex]->onPrimaryPress();
+        drawScreen();
+    }
+
+    if (M5.BtnB.wasPressed())
+    {
+        modes[currentModeIndex]->onSecondaryPress();
+        drawScreen();
+        lastActivity = millis();
+    }
+
+    if (M5.BtnPWR.wasPressed())
+    {
+        currentModeIndex = (currentModeIndex + 1) % MODE_COUNT;
+        drawScreen();
+        lastActivity = millis();
     }
 
     if (millis() - lastActivity >= SLEEP_TIMEOUT_MS)
