@@ -29,10 +29,7 @@ void ScoreMode::draw()
     M5.Lcd.setTextColor(WHITE);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(10, 10);
-    M5.Lcd.print("Score");
-
-    M5.Lcd.setTextColor(DARKGREY);
-    M5.Lcd.print(" ");
+    M5.Lcd.print("Score ");
     M5.Lcd.print(settingsMode->getTargetTypeLabel());
 
     M5.Lcd.println();
