@@ -56,8 +56,8 @@ void drawBatteryLevel()
         M5.Lcd.setTextColor(SILVER);
     }
 
-    M5.Lcd.setTextSize(1);
-    M5.Lcd.setCursor(215, 128);
+    M5.Lcd.setTextSize(1.5);
+    M5.Lcd.setCursor(200, 120);
     M5.Lcd.print(batteryLevel);
     M5.Lcd.print("%");
 }

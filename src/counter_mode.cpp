@@ -32,6 +32,12 @@ void CounterMode::draw()
     M5.Lcd.setTextSize(5);
     M5.Lcd.setCursor(60, 50);
     M5.Lcd.println(counter);
+    M5.Lcd.setTextColor(SILVER);
+    M5.Lcd.setTextSize(1.5);
+    M5.Lcd.setCursor(10, 120);
+    M5.Lcd.print("(Volee: ");
+    M5.Lcd.print(settingsMode->getEndSize());
+    M5.Lcd.println(")");
 }
 
 bool CounterMode::incrementCounter(unsigned int value)
