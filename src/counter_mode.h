@@ -9,6 +9,7 @@ public:
     void save() override;
     void draw() override;
     bool onPrimaryPress() override;
+    bool onPrimaryHoldRepeat() override;
     void reset() override;
     const char *label() override { return "A"; }
 

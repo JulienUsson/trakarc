@@ -88,20 +88,7 @@ bool ScoreMode::onPrimaryPress()
 
 bool ScoreMode::onPrimaryHoldRepeat()
 {
-    if (!arrowInProgress)
-    {
-        currentArrow = 10;
-        arrowInProgress = true;
-    }
-    else if (currentArrow > 0)
-    {
-        currentArrow--;
-    }
-    else
-    {
-        currentArrow = 10;
-    }
-    return true;
+    return onPrimaryPress();
 }
 
 bool ScoreMode::onSecondaryPress()

@@ -35,6 +35,11 @@ bool CounterMode::onPrimaryPress()
     return true;
 }
 
+bool CounterMode::onPrimaryHoldRepeat()
+{
+    return onPrimaryPress();
+}
+
 void CounterMode::reset()
 {
     counter = 0;
