@@ -35,17 +35,6 @@ bool CounterMode::onPrimaryPress()
     return true;
 }
 
-bool CounterMode::onPrimaryLongPress()
-{
-    if (counter == 0)
-    {
-        return false;
-    }
-    counter = 0;
-    save();
-    return true;
-}
-
 void CounterMode::reset()
 {
     counter = 0;
