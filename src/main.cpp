@@ -92,6 +92,13 @@ void setup()
     }
 
     M5.Lcd.setRotation(1);
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setTextColor(WHITE);
+    M5.Lcd.setTextSize(3);
+    M5.Lcd.setCursor(50, 60);
+    M5.Lcd.println("Trakark");
+    delay(500);
+
     drawScreen();
     lastActivity = millis();
 
