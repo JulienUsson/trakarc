@@ -21,7 +21,6 @@ unsigned long lastHoldRepeat = 0;
 int loadMode();
 void saveMode(int mode);
 void sleep();
-void resetActivity();
 void drawModeLabel();
 void drawBatteryLevel();
 
@@ -97,11 +96,20 @@ void loop()
     unsigned long now = millis();
     M5.update();
 
+    if (M5.BtnPWR.isPressed() || M5.BtnA.isPressed() || M5.BtnB.isPressed())
+    {
+        lastActivity = millis();
+        if (isDimmed)
+        {
+            M5.Display.setBrightness(255);
+            isDimmed = false;
+        }
+    }
+
     if (M5.BtnA.wasClicked())
     {
         if (modes[currentModeIndex]->onPrimaryPress())
         {
-            resetActivity();
             drawScreen();
         }
     }
@@ -110,7 +118,6 @@ void loop()
     {
         if (modes[currentModeIndex]->onPrimaryLongPress())
         {
-            resetActivity();
             drawScreen();
         }
     }
@@ -121,7 +128,6 @@ void loop()
         {
             if (modes[currentModeIndex]->onPrimaryHoldRepeat())
             {
-                resetActivity();
                 drawScreen();
             }
             lastHoldRepeat = now;
@@ -137,7 +143,6 @@ void loop()
     {
         if (modes[currentModeIndex]->onSecondaryPress())
         {
-            resetActivity();
             drawScreen();
         }
     }
@@ -148,7 +153,6 @@ void loop()
         currentModeIndex = (currentModeIndex + 1) % MODE_COUNT;
         modes[currentModeIndex]->onEnter();
         saveMode(currentModeIndex);
-        resetActivity();
         drawScreen();
     }
 
@@ -193,16 +197,6 @@ void saveMode(int mode)
     prefs.begin("app", false);
     prefs.putInt("mode", mode);
     prefs.end();
-}
-
-void resetActivity()
-{
-    lastActivity = millis();
-    if (isDimmed)
-    {
-        M5.Display.setBrightness(255);
-        isDimmed = false;
-    }
 }
 
 void sleep()
