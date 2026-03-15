@@ -48,4 +48,5 @@ private:
     ScoreMode *scoreMode = nullptr;
 
     static const char *getTargetTypeLabel(TargetType type);
+    void drawMenuItem(int y, MenuItem item, const char *label);
 };

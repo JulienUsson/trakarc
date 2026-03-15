@@ -101,6 +101,22 @@ void SettingsMode::save()
     prefs.end();
 }
 
+void SettingsMode::drawMenuItem(int y, MenuItem item, const char *label)
+{
+    M5.Lcd.setCursor(10, y);
+    if (currentItem == item)
+    {
+        M5.Lcd.setTextColor(YELLOW);
+        M5.Lcd.print("> ");
+    }
+    else
+    {
+        M5.Lcd.setTextColor(WHITE);
+        M5.Lcd.print("  ");
+    }
+    M5.Lcd.print(label);
+}
+
 void SettingsMode::draw()
 {
     M5.Lcd.setTextColor(WHITE);
@@ -109,45 +125,14 @@ void SettingsMode::draw()
     M5.Lcd.println("Parametres");
 
     M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(10, 50);
 
-    switch (currentItem)
-    {
-    case RESET_ALL:
-        M5.Lcd.setTextColor(YELLOW);
-        M5.Lcd.println("> Reinitialiser");
-        M5.Lcd.setTextColor(WHITE);
-        M5.Lcd.setCursor(10, 80);
-        M5.Lcd.print("  Blason: ");
-        M5.Lcd.println(getTargetTypeLabel(targetType));
-        M5.Lcd.setCursor(10, 110);
-        M5.Lcd.print("  Volee: ");
-        M5.Lcd.println(endSize);
-        break;
-    case TARGET_TYPE_ITEM:
-        M5.Lcd.setTextColor(WHITE);
-        M5.Lcd.println("  Reinitialiser");
-        M5.Lcd.setCursor(10, 80);
-        M5.Lcd.setTextColor(YELLOW);
-        M5.Lcd.print("> Blason: ");
-        M5.Lcd.println(getTargetTypeLabel(targetType));
-        M5.Lcd.setTextColor(WHITE);
-        M5.Lcd.setCursor(10, 110);
-        M5.Lcd.print("  Volee: ");
-        M5.Lcd.println(endSize);
-        break;
-    case END_SIZE_ITEM:
-        M5.Lcd.setTextColor(WHITE);
-        M5.Lcd.println("  Reinitialiser");
-        M5.Lcd.setCursor(10, 80);
-        M5.Lcd.print("  Blason: ");
-        M5.Lcd.println(getTargetTypeLabel(targetType));
-        M5.Lcd.setCursor(10, 110);
-        M5.Lcd.setTextColor(YELLOW);
-        M5.Lcd.print("> Volee: ");
-        M5.Lcd.println(endSize);
-        break;
-    }
+    drawMenuItem(50, RESET_ALL, "Reinitialiser");
+
+    drawMenuItem(80, TARGET_TYPE_ITEM, "Blason: ");
+    M5.Lcd.println(getTargetTypeLabel(targetType));
+
+    drawMenuItem(110, END_SIZE_ITEM, "Volee: ");
+    M5.Lcd.println(endSize);
 }
 
 bool SettingsMode::onPrimaryPress()
