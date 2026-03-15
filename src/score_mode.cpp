@@ -68,7 +68,7 @@ void ScoreMode::draw()
     M5.Lcd.println(arrowCount);
 }
 
-void ScoreMode::onPrimaryPress()
+bool ScoreMode::onPrimaryPress()
 {
     if (!arrowInProgress)
     {
@@ -83,13 +83,15 @@ void ScoreMode::onPrimaryPress()
     {
         currentArrow = 10;
     }
+    return true;
 }
 
-void ScoreMode::onPrimaryLongPress()
+bool ScoreMode::onPrimaryLongPress()
 {
+    return false;
 }
 
-void ScoreMode::onSecondaryPress()
+bool ScoreMode::onSecondaryPress()
 {
     if (arrowInProgress)
     {
@@ -98,7 +100,9 @@ void ScoreMode::onSecondaryPress()
         currentArrow = 0;
         arrowInProgress = false;
         save();
+        return true;
     }
+    return false;
 }
 
 void ScoreMode::onWakeUp()

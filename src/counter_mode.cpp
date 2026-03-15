@@ -28,20 +28,27 @@ void CounterMode::draw()
     M5.Lcd.println(counter);
 }
 
-void CounterMode::onPrimaryPress()
+bool CounterMode::onPrimaryPress()
 {
     counter++;
     save();
+    return true;
 }
 
-void CounterMode::onPrimaryLongPress()
+bool CounterMode::onPrimaryLongPress()
 {
+    if (counter == 0)
+    {
+        return false;
+    }
     counter = 0;
     save();
+    return true;
 }
 
-void CounterMode::onSecondaryPress()
+bool CounterMode::onSecondaryPress()
 {
+    return false;
 }
 
 void CounterMode::onWakeUp()

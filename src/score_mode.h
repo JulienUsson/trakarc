@@ -8,9 +8,9 @@ public:
     void load() override;
     void save() override;
     void draw() override;
-    void onPrimaryPress() override;
-    void onPrimaryLongPress() override;
-    void onSecondaryPress() override;
+    bool onPrimaryPress() override;
+    bool onPrimaryLongPress() override;
+    bool onSecondaryPress() override;
     void onWakeUp() override;
     void reset() override;
     const char *label() override { return "B"; }

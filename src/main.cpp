@@ -53,22 +53,29 @@ void loop()
 
     if (M5.BtnA.wasHold())
     {
-        modes[currentModeIndex]->onPrimaryLongPress();
-        drawScreen();
+        if (modes[currentModeIndex]->onPrimaryLongPress())
+        {
+            resetActivity();
+            drawScreen();
+        }
     }
 
     if (M5.BtnA.wasClicked())
     {
-        modes[currentModeIndex]->onPrimaryPress();
-        resetActivity();
-        drawScreen();
+        if (modes[currentModeIndex]->onPrimaryPress())
+        {
+            resetActivity();
+            drawScreen();
+        }
     }
 
     if (M5.BtnB.wasPressed())
     {
-        modes[currentModeIndex]->onSecondaryPress();
-        resetActivity();
-        drawScreen();
+        if (modes[currentModeIndex]->onSecondaryPress())
+        {
+            resetActivity();
+            drawScreen();
+        }
     }
 
     if (M5.BtnPWR.wasClicked())
