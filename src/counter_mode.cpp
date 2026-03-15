@@ -46,6 +46,11 @@ bool CounterMode::onPrimaryLongPress()
     return true;
 }
 
+bool CounterMode::onPrimaryHoldRepeat()
+{
+    return false;
+}
+
 bool CounterMode::onSecondaryPress()
 {
     return false;

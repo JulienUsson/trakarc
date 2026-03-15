@@ -6,6 +6,7 @@
 
 const unsigned long DIM_TIMEOUT_MS = 5000;
 const unsigned long SLEEP_TIMEOUT_MS = 10000;
+const unsigned long HOLD_REPEAT_INTERVAL_MS = 150;
 
 CounterMode counterMode;
 ScoreMode scoreMode;
@@ -15,6 +16,7 @@ int currentModeIndex = 0;
 
 unsigned long lastActivity = 0;
 bool isDimmed = false;
+unsigned long lastHoldRepeat = 0;
 
 int loadMode();
 void saveMode(int mode);
@@ -25,7 +27,7 @@ void drawBatteryLevel();
 
 void drawModeLabel()
 {
-    M5.Lcd.setTextColor(WHITE);
+    M5.Lcd.setTextColor(LIGHTGREY);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(220, 10);
     M5.Lcd.print(modes[currentModeIndex]->label());
@@ -50,7 +52,7 @@ void drawBatteryLevel()
     }
     else
     {
-        M5.Lcd.setTextColor(DARKGREY);
+        M5.Lcd.setTextColor(LIGHTGREY);
     }
 
     M5.Lcd.setTextSize(1);
@@ -82,18 +84,11 @@ void setup()
     drawScreen();
     lastActivity = millis();
 }
+
 void loop()
 {
+    unsigned long now = millis();
     M5.update();
-
-    if (M5.BtnA.wasHold())
-    {
-        if (modes[currentModeIndex]->onPrimaryLongPress())
-        {
-            resetActivity();
-            drawScreen();
-        }
-    }
 
     if (M5.BtnA.wasClicked())
     {
@@ -104,7 +99,34 @@ void loop()
         }
     }
 
-    if (M5.BtnB.wasPressed())
+    if (M5.BtnA.wasHold())
+    {
+        if (modes[currentModeIndex]->onPrimaryLongPress())
+        {
+            resetActivity();
+            drawScreen();
+        }
+    }
+
+    if (M5.BtnA.isHolding())
+    {
+        if (lastHoldRepeat == 0 || now - lastHoldRepeat >= HOLD_REPEAT_INTERVAL_MS)
+        {
+            if (modes[currentModeIndex]->onPrimaryHoldRepeat())
+            {
+                resetActivity();
+                drawScreen();
+            }
+            lastHoldRepeat = now;
+        }
+    }
+
+    if (M5.BtnA.isReleased())
+    {
+        lastHoldRepeat = 0;
+    }
+
+    if (M5.BtnB.wasClicked())
     {
         if (modes[currentModeIndex]->onSecondaryPress())
         {

@@ -12,6 +12,7 @@ public:
     virtual void draw() = 0;
     virtual bool onPrimaryPress() = 0;
     virtual bool onPrimaryLongPress() = 0;
+    virtual bool onPrimaryHoldRepeat() = 0;
     virtual bool onSecondaryPress() = 0;
     virtual void onWakeUp() = 0;
     virtual void reset() = 0;

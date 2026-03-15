@@ -91,6 +91,24 @@ bool ScoreMode::onPrimaryLongPress()
     return false;
 }
 
+bool ScoreMode::onPrimaryHoldRepeat()
+{
+    if (!arrowInProgress)
+    {
+        currentArrow = 10;
+        arrowInProgress = true;
+    }
+    else if (currentArrow > 0)
+    {
+        currentArrow--;
+    }
+    else
+    {
+        currentArrow = 10;
+    }
+    return true;
+}
+
 bool ScoreMode::onSecondaryPress()
 {
     if (arrowInProgress)

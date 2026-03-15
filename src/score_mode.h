@@ -10,6 +10,7 @@ public:
     void draw() override;
     bool onPrimaryPress() override;
     bool onPrimaryLongPress() override;
+    bool onPrimaryHoldRepeat() override;
     bool onSecondaryPress() override;
     void onWakeUp() override;
     void reset() override;
