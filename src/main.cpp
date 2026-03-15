@@ -27,7 +27,7 @@ void drawBatteryLevel();
 
 void drawModeLabel()
 {
-    M5.Lcd.setTextColor(LIGHTGREY);
+    M5.Lcd.setTextColor(SILVER);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(220, 10);
     M5.Lcd.print(modes[currentModeIndex]->label());
@@ -52,7 +52,7 @@ void drawBatteryLevel()
     }
     else
     {
-        M5.Lcd.setTextColor(LIGHTGREY);
+        M5.Lcd.setTextColor(SILVER);
     }
 
     M5.Lcd.setTextSize(1);
