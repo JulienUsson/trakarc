@@ -74,6 +74,7 @@ void setup()
 {
     auto cfg = M5.config();
     M5.begin(cfg);
+    M5.BtnPWR.setHoldThresh(2000);
 
     currentModeIndex = loadMode();
 
@@ -83,6 +84,12 @@ void setup()
     M5.Lcd.setRotation(1);
     drawScreen();
     lastActivity = millis();
+
+    while (digitalRead(GPIO_NUM_35) == LOW)
+    {
+        delay(10);
+    }
+    M5.update();
 }
 
 void loop()
@@ -143,6 +150,17 @@ void loop()
         saveMode(currentModeIndex);
         resetActivity();
         drawScreen();
+    }
+
+    if (M5.BtnPWR.wasHold())
+    {
+        M5.Lcd.fillScreen(BLACK);
+        M5.Lcd.setTextColor(WHITE);
+        M5.Lcd.setTextSize(3);
+        M5.Lcd.setCursor(60, 60);
+        M5.Lcd.println("Bye!");
+        delay(500);
+        M5.Power.powerOff();
     }
 
     unsigned long inactiveTime = millis() - lastActivity;
