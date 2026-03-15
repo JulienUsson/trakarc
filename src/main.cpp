@@ -7,6 +7,7 @@
 
 const unsigned long DIM_TIMEOUT_MS = 5000;
 const unsigned long SLEEP_TIMEOUT_MS = 10000;
+const unsigned long POWER_OFF_HOLD_MS = 2000;
 
 CounterMode counterMode;
 ScoreMode scoreMode;
@@ -74,7 +75,7 @@ void setup()
 {
     auto cfg = M5.config();
     M5.begin(cfg);
-    M5.BtnPWR.setHoldThresh(2000);
+    M5.BtnPWR.setHoldThresh(POWER_OFF_HOLD_MS);
 
     currentModeIndex = loadMode();
     settingsMode.setModes(&counterMode, &scoreMode);
