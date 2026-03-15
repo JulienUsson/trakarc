@@ -1,19 +1,9 @@
 #include "score_mode.h"
+#include "settings_mode.h"
 
-uint16_t ScoreMode::getArrowColor(unsigned int score)
+void ScoreMode::setSettingsMode(SettingsMode *settings)
 {
-    if (score >= 9)
-        return YELLOW;
-    else if (score >= 7)
-        return RED;
-    else if (score >= 5)
-        return BLUE;
-    else if (score >= 3)
-        return DARKGREY;
-    else if (score >= 1)
-        return WHITE;
-    else
-        return LIGHTGREY;
+    settingsMode = settings;
 }
 
 void ScoreMode::load()
@@ -39,11 +29,17 @@ void ScoreMode::draw()
     M5.Lcd.setTextColor(WHITE);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(10, 10);
-    M5.Lcd.println("Score");
+    M5.Lcd.print("Score");
+
+    M5.Lcd.setTextColor(DARKGREY);
+    M5.Lcd.print(" ");
+    M5.Lcd.print(settingsMode->getTargetTypeLabel());
+
+    M5.Lcd.println();
 
     if (arrowInProgress)
     {
-        M5.Lcd.setTextColor(getArrowColor(currentArrow));
+        M5.Lcd.setTextColor(settingsMode->getArrowColor(currentArrow));
         M5.Lcd.setTextSize(3);
         M5.Lcd.setCursor(10, 40);
         M5.Lcd.print("Fleche: ");
@@ -70,19 +66,27 @@ void ScoreMode::draw()
 
 bool ScoreMode::onPrimaryPress()
 {
+    unsigned int maxScore = settingsMode->getMaxScore();
+    unsigned int minScore = settingsMode->getMinScore();
+
     if (!arrowInProgress)
     {
-        currentArrow = 10;
+        currentArrow = maxScore;
         arrowInProgress = true;
     }
-    else if (currentArrow > 0)
+    else if (currentArrow > minScore)
     {
         currentArrow--;
     }
+    else if (currentArrow == minScore)
+    {
+        currentArrow = 0;
+    }
     else
     {
-        currentArrow = 10;
+        currentArrow = maxScore;
     }
+
     return true;
 }
 

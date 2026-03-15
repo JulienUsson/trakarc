@@ -8,20 +8,41 @@ class ScoreMode;
 class SettingsMode : public Mode
 {
 public:
+    enum TargetType
+    {
+        TARGET_CLASSIQUE = 0,
+        TARGET_TRISPOT,
+        TARGET_FIELD,
+        TARGET_TYPE_COUNT
+    };
+
     void setModes(CounterMode *counter, ScoreMode *score);
     void draw() override;
+    void load() override;
+    void save() override;
     bool onPrimaryPress() override;
     bool onSecondaryPress() override;
+    void onEnter() override;
+    void onWakeUp() override;
     const char *label() override { return "C"; }
+    TargetType getTargetType() const { return targetType; }
+    const char *getTargetTypeLabel() const;
+    unsigned int getMaxScore() const;
+    unsigned int getMinScore() const;
+    uint16_t getArrowColor(unsigned int score) const;
 
 private:
     enum MenuItem
     {
         RESET_ALL = 0,
+        TARGET_TYPE_ITEM,
         MENU_ITEM_COUNT
     };
 
     MenuItem currentItem = RESET_ALL;
+    TargetType targetType = TARGET_CLASSIQUE;
     CounterMode *counterMode = nullptr;
     ScoreMode *scoreMode = nullptr;
+
+    static const char *getTargetTypeLabel(TargetType type);
 };

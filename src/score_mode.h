@@ -2,9 +2,12 @@
 
 #include "mode.h"
 
+class SettingsMode;
+
 class ScoreMode : public Mode
 {
 public:
+    void setSettingsMode(SettingsMode *settings);
     void load() override;
     void save() override;
     void draw() override;
@@ -20,5 +23,5 @@ private:
     unsigned int arrowCount = 0;
     unsigned int currentArrow = 0;
     bool arrowInProgress = false;
-    uint16_t getArrowColor(unsigned int score);
+    SettingsMode *settingsMode = nullptr;
 };
