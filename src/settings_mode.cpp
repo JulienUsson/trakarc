@@ -44,7 +44,7 @@ unsigned int SettingsMode::getMinScore() const
     case TARGET_FIELD:
         return 1;
     case TARGET_TRISPOT:
-        return 5;
+        return 6;
     default:
         return 1;
     }
