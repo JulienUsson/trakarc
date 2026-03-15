@@ -2,6 +2,7 @@
 #include <Preferences.h>
 #include "counter_mode.h"
 #include "score_mode.h"
+#include "settings_mode.h"
 #include "Arduino.h"
 
 const unsigned long DIM_TIMEOUT_MS = 5000;
@@ -10,7 +11,8 @@ const unsigned long HOLD_REPEAT_INTERVAL_MS = 150;
 
 CounterMode counterMode;
 ScoreMode scoreMode;
-Mode *modes[] = {&counterMode, &scoreMode};
+SettingsMode settingsMode;
+Mode *modes[] = {&counterMode, &scoreMode, &settingsMode};
 const int MODE_COUNT = sizeof(modes) / sizeof(modes[0]);
 int currentModeIndex = 0;
 
@@ -76,9 +78,12 @@ void setup()
     M5.BtnPWR.setHoldThresh(2000);
 
     currentModeIndex = loadMode();
+    settingsMode.setModes(&counterMode, &scoreMode);
 
     for (int i = 0; i < MODE_COUNT; i++)
+    {
         modes[i]->load();
+    }
 
     M5.Lcd.setRotation(1);
     drawScreen();
