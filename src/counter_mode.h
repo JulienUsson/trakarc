@@ -15,7 +15,8 @@ public:
     bool onPrimaryLongPress() override;
     bool incrementCounter(unsigned int value);
     void reset() override;
-    const char *label() override { return "A"; }
+    const char *key() override { return "A"; }
+    const char *name() const override { return "Compteur"; }
 
 private:
     unsigned int counter = 0;

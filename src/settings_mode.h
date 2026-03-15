@@ -24,7 +24,8 @@ public:
     bool onSecondaryPress() override;
     void onEnter() override;
     void onWakeUp() override;
-    const char *label() override { return "C"; }
+    const char *key() override { return "C"; }
+    const char *name() const override { return "Parametres"; }
     TargetType getTargetType() const { return targetType; }
     const char *getTargetTypeLabel() const;
     unsigned int getMaxScore() const;

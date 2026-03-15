@@ -7,7 +7,8 @@ class Mode
 {
 public:
     virtual ~Mode() = default;
-    virtual const char *label() = 0;
+    virtual const char *key() = 0;
+    virtual const char *name() const = 0;
     virtual void draw() = 0;
     virtual void load() {}
     virtual void save() {}

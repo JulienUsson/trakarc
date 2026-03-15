@@ -6,6 +6,17 @@ void ScoreMode::setSettingsMode(SettingsMode *settings)
     settingsMode = settings;
 }
 
+const char *ScoreMode::name() const
+{
+    static String name;
+    name = "Score ";
+    if (settingsMode)
+    {
+        name += settingsMode->getTargetTypeLabel();
+    }
+    return name.c_str();
+}
+
 void ScoreMode::load()
 {
     Preferences prefs;
@@ -26,15 +37,6 @@ void ScoreMode::save()
 
 void ScoreMode::draw()
 {
-    M5.Lcd.setTextColor(WHITE);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.print("Score ");
-    M5.Lcd.setTextColor(SILVER);
-    M5.Lcd.print("(");
-    M5.Lcd.print(settingsMode->getTargetTypeLabel());
-    M5.Lcd.print(")");
-
     M5.Lcd.println();
 
     if (arrowInProgress)

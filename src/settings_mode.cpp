@@ -119,11 +119,6 @@ void SettingsMode::drawMenuItem(int y, MenuItem item, const char *label)
 
 void SettingsMode::draw()
 {
-    M5.Lcd.setTextColor(WHITE);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.println("Parametres");
-
     M5.Lcd.setTextSize(2);
 
     drawMenuItem(50, RESET_ALL, "Reinitialiser");

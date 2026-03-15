@@ -16,7 +16,8 @@ public:
     bool onSecondaryPress() override;
     void onEnter() override;
     void reset() override;
-    const char *label() override { return "B"; }
+    const char *key() override { return "B"; }
+    const char *name() const override;
     unsigned long getHoldThreshold() override { return 300; }
 
 private:
