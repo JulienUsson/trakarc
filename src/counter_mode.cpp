@@ -44,6 +44,10 @@ void CounterMode::onSecondaryPress()
 {
 }
 
+void CounterMode::onWakeUp()
+{
+}
+
 void CounterMode::reset()
 {
     counter = 0;

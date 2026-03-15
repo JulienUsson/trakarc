@@ -114,6 +114,7 @@ void sleep()
     }
     M5.Lcd.wakeup();
     M5.update();
+    modes[currentModeIndex]->onWakeUp();
     drawScreen();
     lastActivity = millis();
 }

@@ -11,6 +11,7 @@ public:
     void onPrimaryPress() override;
     void onPrimaryLongPress() override;
     void onSecondaryPress() override;
+    void onWakeUp() override;
     void reset() override;
     const char *label() override { return "A"; }
 

@@ -11,9 +11,14 @@ public:
     void onPrimaryPress() override;
     void onPrimaryLongPress() override;
     void onSecondaryPress() override;
+    void onWakeUp() override;
     void reset() override;
     const char *label() override { return "B"; }
 
 private:
-    unsigned int score = 0;
+    unsigned int totalScore = 0;
+    unsigned int arrowCount = 0;
+    unsigned int currentArrow = 0;
+    bool arrowInProgress = false;
+    uint16_t getArrowColor(unsigned int score);
 };
