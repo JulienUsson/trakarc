@@ -51,7 +51,7 @@ void loop()
 {
     M5.update();
 
-    if (M5.BtnA.isHolding())
+    if (M5.BtnA.wasHold())
     {
         modes[currentModeIndex]->onPrimaryLongPress();
         drawScreen();
