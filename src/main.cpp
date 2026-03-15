@@ -7,7 +7,6 @@
 
 const unsigned long DIM_TIMEOUT_MS = 5000;
 const unsigned long SLEEP_TIMEOUT_MS = 10000;
-const unsigned long HOLD_REPEAT_INTERVAL_MS = 150;
 
 CounterMode counterMode;
 ScoreMode scoreMode;
@@ -129,7 +128,8 @@ void loop()
 
     if (M5.BtnA.isHolding())
     {
-        if (lastHoldRepeat == 0 || now - lastHoldRepeat >= HOLD_REPEAT_INTERVAL_MS)
+        unsigned long holdRepeatInterval = modes[currentModeIndex]->getHoldRepeatIntervalMs();
+        if (lastHoldRepeat == 0 || now - lastHoldRepeat >= holdRepeatInterval)
         {
             if (modes[currentModeIndex]->onPrimaryHoldRepeat())
             {
