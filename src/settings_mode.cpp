@@ -7,13 +7,13 @@ const char *SettingsMode::getTargetTypeLabel(TargetType type)
     switch (type)
     {
     case TARGET_CLASSIQUE:
-        return "Classique";
+        return "classique";
     case TARGET_TRISPOT:
-        return "Trispot";
+        return "trispot";
     case TARGET_FIELD:
-        return "Campagne";
+        return "campagne";
     default:
-        return "Inconnu";
+        return "inconnu";
     }
 }
 
