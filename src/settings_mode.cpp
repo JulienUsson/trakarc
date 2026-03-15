@@ -143,21 +143,20 @@ bool SettingsMode::onPrimaryPress()
         targetType = (TargetType)((targetType + 1) % TARGET_TYPE_COUNT);
         scoreMode->reset();
         save();
-        break;
+        return true;
     case END_SIZE_ITEM:
         endSize++;
         if (endSize > 12)
             endSize = 2;
         save();
-        break;
+        return true;
     case RESET_ALL:
         counterMode->reset();
         scoreMode->reset();
-        break;
+        return false;
     default:
-        break;
+        return false;
     }
-    return true;
 }
 
 void SettingsMode::onEnter()
