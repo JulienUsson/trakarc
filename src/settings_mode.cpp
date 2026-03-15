@@ -88,6 +88,7 @@ void SettingsMode::load()
     Preferences prefs;
     prefs.begin("settings", true);
     targetType = (TargetType)prefs.getUInt("target", TARGET_CLASSIQUE);
+    endSize = prefs.getUInt("endSize", 6);
     prefs.end();
 }
 
@@ -96,6 +97,7 @@ void SettingsMode::save()
     Preferences prefs;
     prefs.begin("settings", false);
     prefs.putUInt("target", targetType);
+    prefs.putUInt("endSize", endSize);
     prefs.end();
 }
 
@@ -118,6 +120,9 @@ void SettingsMode::draw()
         M5.Lcd.setCursor(10, 80);
         M5.Lcd.print("  Blason: ");
         M5.Lcd.println(getTargetTypeLabel(targetType));
+        M5.Lcd.setCursor(10, 110);
+        M5.Lcd.print("  Volee: ");
+        M5.Lcd.println(endSize);
         break;
     case TARGET_TYPE_ITEM:
         M5.Lcd.setTextColor(WHITE);
@@ -126,6 +131,21 @@ void SettingsMode::draw()
         M5.Lcd.setTextColor(YELLOW);
         M5.Lcd.print("> Blason: ");
         M5.Lcd.println(getTargetTypeLabel(targetType));
+        M5.Lcd.setTextColor(WHITE);
+        M5.Lcd.setCursor(10, 110);
+        M5.Lcd.print("  Volee: ");
+        M5.Lcd.println(endSize);
+        break;
+    case END_SIZE_ITEM:
+        M5.Lcd.setTextColor(WHITE);
+        M5.Lcd.println("  Reinitialiser");
+        M5.Lcd.setCursor(10, 80);
+        M5.Lcd.print("  Blason: ");
+        M5.Lcd.println(getTargetTypeLabel(targetType));
+        M5.Lcd.setCursor(10, 110);
+        M5.Lcd.setTextColor(YELLOW);
+        M5.Lcd.print("> Volee: ");
+        M5.Lcd.println(endSize);
         break;
     }
 }
@@ -137,6 +157,12 @@ bool SettingsMode::onPrimaryPress()
     case TARGET_TYPE_ITEM:
         targetType = (TargetType)((targetType + 1) % TARGET_TYPE_COUNT);
         scoreMode->reset();
+        save();
+        break;
+    case END_SIZE_ITEM:
+        endSize++;
+        if (endSize > 12)
+            endSize = 2;
         save();
         break;
     case RESET_ALL:

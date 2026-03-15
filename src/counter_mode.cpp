@@ -1,4 +1,10 @@
 #include "counter_mode.h"
+#include "settings_mode.h"
+
+void CounterMode::setSettingsMode(SettingsMode *settings)
+{
+    settingsMode = settings;
+}
 
 void CounterMode::load()
 {
@@ -37,7 +43,9 @@ bool CounterMode::onPrimaryPress()
 
 bool CounterMode::onPrimaryHoldRepeat()
 {
-    return onPrimaryPress();
+    counter += settingsMode->getEndSize();
+    save();
+    return true;
 }
 
 void CounterMode::reset()

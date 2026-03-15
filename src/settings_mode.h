@@ -30,17 +30,20 @@ public:
     unsigned int getMaxScore() const;
     unsigned int getMinScore() const;
     uint16_t getArrowColor(unsigned int score) const;
+    unsigned int getEndSize() const { return endSize; }
 
 private:
     enum MenuItem
     {
         RESET_ALL = 0,
         TARGET_TYPE_ITEM,
+        END_SIZE_ITEM,
         MENU_ITEM_COUNT
     };
 
     MenuItem currentItem = RESET_ALL;
     TargetType targetType = TARGET_CLASSIQUE;
+    unsigned int endSize = 6;
     CounterMode *counterMode = nullptr;
     ScoreMode *scoreMode = nullptr;
 

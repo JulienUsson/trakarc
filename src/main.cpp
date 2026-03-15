@@ -79,6 +79,7 @@ void setup()
     currentModeIndex = loadMode();
     settingsMode.setModes(&counterMode, &scoreMode);
     scoreMode.setSettingsMode(&settingsMode);
+    counterMode.setSettingsMode(&settingsMode);
 
     for (int i = 0; i < MODE_COUNT; i++)
     {
