@@ -34,18 +34,21 @@ void CounterMode::draw()
     M5.Lcd.println(counter);
 }
 
-bool CounterMode::onPrimaryPress()
+bool CounterMode::incrementCounter(unsigned int value)
 {
-    counter++;
+    counter = (counter + value) % 10000;
     save();
     return true;
 }
 
-bool CounterMode::onPrimaryHoldRepeat()
+bool CounterMode::onPrimaryPress()
 {
-    counter += settingsMode->getEndSize();
-    save();
-    return true;
+    return incrementCounter(1);
+}
+
+bool CounterMode::onPrimaryLongPress()
+{
+    return incrementCounter(settingsMode->getEndSize());
 }
 
 void CounterMode::reset()
