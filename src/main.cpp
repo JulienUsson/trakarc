@@ -20,17 +20,52 @@ int loadMode();
 void saveMode(int mode);
 void sleep();
 void resetActivity();
+void drawModeLabel();
+void drawBatteryLevel();
+
+void drawModeLabel()
+{
+    M5.Lcd.setTextColor(WHITE);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(220, 10);
+    M5.Lcd.print(modes[currentModeIndex]->label());
+}
+
+void drawBatteryLevel()
+{
+    int batteryLevel = M5.Power.getBatteryLevel();
+    bool isCharging = M5.Power.isCharging() == M5.Power.is_charging;
+
+    if (isCharging)
+    {
+        M5.Lcd.setTextColor(GREEN);
+    }
+    else if (batteryLevel < 10)
+    {
+        M5.Lcd.setTextColor(RED);
+    }
+    else if (batteryLevel < 20)
+    {
+        M5.Lcd.setTextColor(ORANGE);
+    }
+    else
+    {
+        M5.Lcd.setTextColor(DARKGREY);
+    }
+
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.setCursor(215, 128);
+    M5.Lcd.print(batteryLevel);
+    M5.Lcd.print("%");
+}
 
 void drawScreen()
 {
     M5.Lcd.fillScreen(BLACK);
 
-    M5.Lcd.setTextColor(WHITE);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(220, 10);
-    M5.Lcd.print(modes[currentModeIndex]->label());
-
+    drawModeLabel();
     modes[currentModeIndex]->draw();
+    drawBatteryLevel();
 }
 
 void setup()
