@@ -7,16 +7,16 @@ class Mode
 {
 public:
     virtual ~Mode() = default;
-    virtual void load() = 0;
-    virtual void save() = 0;
-    virtual void draw() = 0;
-    virtual bool onPrimaryPress() = 0;
-    virtual bool onPrimaryLongPress() = 0;
-    virtual bool onPrimaryHoldRepeat() = 0;
-    virtual bool onSecondaryPress() = 0;
-    virtual void onWakeUp() = 0;
-    virtual void onEnter() = 0;
-    virtual void onExit() = 0;
-    virtual void reset() = 0;
     virtual const char *label() = 0;
+    virtual void draw() = 0;
+    virtual void load() {}
+    virtual void save() {}
+    virtual bool onPrimaryPress() { return false; }
+    virtual bool onPrimaryLongPress() { return false; }
+    virtual bool onPrimaryHoldRepeat() { return false; }
+    virtual bool onSecondaryPress() { return false; }
+    virtual void onWakeUp() {}
+    virtual void onEnter() {}
+    virtual void onExit() {}
+    virtual void reset() {}
 };

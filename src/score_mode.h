@@ -9,12 +9,10 @@ public:
     void save() override;
     void draw() override;
     bool onPrimaryPress() override;
-    bool onPrimaryLongPress() override;
     bool onPrimaryHoldRepeat() override;
     bool onSecondaryPress() override;
     void onWakeUp() override;
     void onEnter() override;
-    void onExit() override;
     void reset() override;
     const char *label() override { return "B"; }
 

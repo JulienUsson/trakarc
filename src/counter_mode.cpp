@@ -46,28 +46,6 @@ bool CounterMode::onPrimaryLongPress()
     return true;
 }
 
-bool CounterMode::onPrimaryHoldRepeat()
-{
-    return false;
-}
-
-bool CounterMode::onSecondaryPress()
-{
-    return false;
-}
-
-void CounterMode::onWakeUp()
-{
-}
-
-void CounterMode::onEnter()
-{
-}
-
-void CounterMode::onExit()
-{
-}
-
 void CounterMode::reset()
 {
     counter = 0;

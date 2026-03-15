@@ -86,11 +86,6 @@ bool ScoreMode::onPrimaryPress()
     return true;
 }
 
-bool ScoreMode::onPrimaryLongPress()
-{
-    return false;
-}
-
 bool ScoreMode::onPrimaryHoldRepeat()
 {
     if (!arrowInProgress)
@@ -133,10 +128,6 @@ void ScoreMode::onEnter()
 {
     currentArrow = 0;
     arrowInProgress = false;
-}
-
-void ScoreMode::onExit()
-{
 }
 
 void ScoreMode::reset()
