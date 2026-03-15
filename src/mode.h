@@ -19,5 +19,6 @@ public:
     virtual void onEnter() {}
     virtual void onExit() {}
     virtual void reset() {}
-    virtual unsigned long getHoldRepeatIntervalMs() { return 150; }
+    virtual unsigned long getHoldRepeatIntervalMs() { return 200; }
+    virtual unsigned long getHoldThreshold() { return 400; }
 };

@@ -17,6 +17,7 @@ public:
     void onEnter() override;
     void reset() override;
     const char *label() override { return "B"; }
+    unsigned long getHoldThreshold() override { return 300; }
 
 private:
     unsigned int totalScore = 0;

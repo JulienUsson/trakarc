@@ -81,6 +81,7 @@ void setup()
     settingsMode.setModes(&counterMode, &scoreMode);
     scoreMode.setSettingsMode(&settingsMode);
     counterMode.setSettingsMode(&settingsMode);
+    M5.BtnA.setHoldThresh(modes[currentModeIndex]->getHoldThreshold());
 
     for (int i = 0; i < MODE_COUNT; i++)
     {
@@ -160,6 +161,7 @@ void loop()
         modes[currentModeIndex]->onExit();
         currentModeIndex = (currentModeIndex + 1) % MODE_COUNT;
         modes[currentModeIndex]->onEnter();
+        M5.BtnA.setHoldThresh(modes[currentModeIndex]->getHoldThreshold());
         saveMode(currentModeIndex);
         drawScreen();
     }
