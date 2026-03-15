@@ -15,7 +15,7 @@ public:
     virtual bool onPrimaryLongPress() { return false; }
     virtual bool onPrimaryHoldRepeat() { return false; }
     virtual bool onSecondaryPress() { return false; }
-    virtual void onWakeUp() {}
+    virtual void onWakeUp() { onEnter(); }
     virtual void onEnter() {}
     virtual void onExit() {}
     virtual void reset() {}

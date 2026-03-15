@@ -118,12 +118,6 @@ bool ScoreMode::onSecondaryPress()
     return false;
 }
 
-void ScoreMode::onWakeUp()
-{
-    currentArrow = 0;
-    arrowInProgress = false;
-}
-
 void ScoreMode::onEnter()
 {
     currentArrow = 0;

@@ -11,7 +11,6 @@ public:
     bool onPrimaryPress() override;
     bool onPrimaryHoldRepeat() override;
     bool onSecondaryPress() override;
-    void onWakeUp() override;
     void onEnter() override;
     void reset() override;
     const char *label() override { return "B"; }
