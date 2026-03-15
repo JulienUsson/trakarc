@@ -4,7 +4,8 @@
 #include "score_mode.h"
 #include "Arduino.h"
 
-const unsigned long SLEEP_TIMEOUT_MS = 5000;
+const unsigned long DIM_TIMEOUT_MS = 5000;
+const unsigned long SLEEP_TIMEOUT_MS = 10000;
 
 CounterMode counterMode;
 ScoreMode scoreMode;
@@ -13,10 +14,12 @@ const int MODE_COUNT = sizeof(modes) / sizeof(modes[0]);
 int currentModeIndex = 0;
 
 unsigned long lastActivity = 0;
+bool isDimmed = false;
 
 int loadMode();
 void saveMode(int mode);
 void sleep();
+void resetActivity();
 
 void drawScreen()
 {
@@ -57,14 +60,14 @@ void loop()
     if (M5.BtnA.wasClicked())
     {
         modes[currentModeIndex]->onPrimaryPress();
-        lastActivity = millis();
+        resetActivity();
         drawScreen();
     }
 
     if (M5.BtnB.wasPressed())
     {
         modes[currentModeIndex]->onSecondaryPress();
-        lastActivity = millis();
+        resetActivity();
         drawScreen();
     }
 
@@ -72,13 +75,20 @@ void loop()
     {
         currentModeIndex = (currentModeIndex + 1) % MODE_COUNT;
         saveMode(currentModeIndex);
-        lastActivity = millis();
+        resetActivity();
         drawScreen();
     }
 
-    if (millis() - lastActivity >= SLEEP_TIMEOUT_MS)
+    unsigned long inactiveTime = millis() - lastActivity;
+
+    if (inactiveTime >= SLEEP_TIMEOUT_MS)
     {
         sleep();
+    }
+    else if (inactiveTime >= DIM_TIMEOUT_MS && !isDimmed)
+    {
+        M5.Display.setBrightness(20);
+        isDimmed = true;
     }
 
     delay(10);
@@ -101,6 +111,16 @@ void saveMode(int mode)
     prefs.end();
 }
 
+void resetActivity()
+{
+    lastActivity = millis();
+    if (isDimmed)
+    {
+        M5.Display.setBrightness(255);
+        isDimmed = false;
+    }
+}
+
 void sleep()
 {
     M5.Display.sleep();
@@ -113,6 +133,8 @@ void sleep()
         delay(10);
     }
     M5.Lcd.wakeup();
+    M5.Display.setBrightness(255);
+    isDimmed = false;
     M5.update();
     modes[currentModeIndex]->onWakeUp();
     drawScreen();
