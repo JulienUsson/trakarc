@@ -60,6 +60,14 @@ void CounterMode::onWakeUp()
 {
 }
 
+void CounterMode::onEnter()
+{
+}
+
+void CounterMode::onExit()
+{
+}
+
 void CounterMode::reset()
 {
     counter = 0;

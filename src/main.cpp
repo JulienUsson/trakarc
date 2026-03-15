@@ -137,7 +137,9 @@ void loop()
 
     if (M5.BtnPWR.wasClicked())
     {
+        modes[currentModeIndex]->onExit();
         currentModeIndex = (currentModeIndex + 1) % MODE_COUNT;
+        modes[currentModeIndex]->onEnter();
         saveMode(currentModeIndex);
         resetActivity();
         drawScreen();

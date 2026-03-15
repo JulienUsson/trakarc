@@ -129,6 +129,16 @@ void ScoreMode::onWakeUp()
     arrowInProgress = false;
 }
 
+void ScoreMode::onEnter()
+{
+    currentArrow = 0;
+    arrowInProgress = false;
+}
+
+void ScoreMode::onExit()
+{
+}
+
 void ScoreMode::reset()
 {
     totalScore = 0;

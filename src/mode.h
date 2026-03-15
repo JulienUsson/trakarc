@@ -15,6 +15,8 @@ public:
     virtual bool onPrimaryHoldRepeat() = 0;
     virtual bool onSecondaryPress() = 0;
     virtual void onWakeUp() = 0;
+    virtual void onEnter() = 0;
+    virtual void onExit() = 0;
     virtual void reset() = 0;
     virtual const char *label() = 0;
 };
