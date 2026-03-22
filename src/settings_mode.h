@@ -32,6 +32,8 @@ public:
     unsigned int getMinScore() const;
     uint16_t getArrowColor(unsigned int score) const;
     unsigned int getEndSize() const { return endSize; }
+    uint8_t getBrightness() const;
+    uint8_t getDimBrightness() const;
 
 private:
     enum MenuItem
@@ -39,12 +41,14 @@ private:
         RESET_ALL = 0,
         TARGET_TYPE_ITEM,
         END_SIZE_ITEM,
+        BRIGHTNESS_ITEM,
         MENU_ITEM_COUNT
     };
 
     MenuItem currentItem = RESET_ALL;
     TargetType targetType = TARGET_CLASSIQUE;
     unsigned int endSize = 6;
+    unsigned int brightnessLevel = 2;
     CounterMode *counterMode = nullptr;
     ScoreMode *scoreMode = nullptr;
 

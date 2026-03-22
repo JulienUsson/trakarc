@@ -93,6 +93,7 @@ void setup()
     }
 
     M5.Lcd.setRotation(1);
+    M5.Display.setBrightness(settingsMode.getBrightness());
     M5.Lcd.fillScreen(BLACK);
     M5.Lcd.setTextColor(WHITE);
     M5.Lcd.setTextSize(3);
@@ -128,7 +129,7 @@ void loop()
         lastActivity = millis();
         if (isDimmed)
         {
-            M5.Display.setBrightness(255);
+            M5.Display.setBrightness(settingsMode.getBrightness());
             isDimmed = false;
         }
     }
@@ -212,7 +213,7 @@ void loop()
     }
     else if (inactiveTime >= DIM_TIMEOUT_MS && !isDimmed)
     {
-        M5.Display.setBrightness(20);
+        M5.Display.setBrightness(settingsMode.getDimBrightness());
         isDimmed = true;
     }
 
@@ -281,7 +282,7 @@ void sleep()
         delay(10);
     }
     M5.Lcd.wakeup();
-    M5.Display.setBrightness(255);
+    M5.Display.setBrightness(settingsMode.getBrightness());
     isDimmed = false;
     M5.update();
     modes[currentModeIndex]->onWakeUp();

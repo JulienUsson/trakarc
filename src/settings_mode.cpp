@@ -89,6 +89,7 @@ void SettingsMode::load()
     prefs.begin("settings", true);
     targetType = (TargetType)prefs.getUInt("target", TARGET_CLASSIQUE);
     endSize = prefs.getUInt("endSize", 6);
+    brightnessLevel = prefs.getUInt("bright", 2);
     prefs.end();
 }
 
@@ -98,6 +99,7 @@ void SettingsMode::save()
     prefs.begin("settings", false);
     prefs.putUInt("target", targetType);
     prefs.putUInt("endSize", endSize);
+    prefs.putUInt("bright", brightnessLevel);
     prefs.end();
 }
 
@@ -121,13 +123,52 @@ void SettingsMode::draw()
 {
     M5.Lcd.setTextSize(2);
 
-    drawMenuItem(50, RESET_ALL, "Reinitialiser");
+    const int MAX_VISIBLE = 3;
+    int scrollOffset = max(0, (int)currentItem - (MAX_VISIBLE - 1));
 
-    drawMenuItem(80, TARGET_TYPE_ITEM, "Blason: ");
-    M5.Lcd.println(getTargetTypeLabel(targetType));
+    for (int i = 0; i < MAX_VISIBLE && (scrollOffset + i) < MENU_ITEM_COUNT; i++)
+    {
+        MenuItem item = (MenuItem)(scrollOffset + i);
+        int y = 40 + i * 30;
 
-    drawMenuItem(110, END_SIZE_ITEM, "Volee: ");
-    M5.Lcd.println(endSize);
+        switch (item)
+        {
+        case RESET_ALL:
+            drawMenuItem(y, RESET_ALL, "Reinitialiser");
+            break;
+        case TARGET_TYPE_ITEM:
+            drawMenuItem(y, TARGET_TYPE_ITEM, "Blason: ");
+            M5.Lcd.print(getTargetTypeLabel(targetType));
+            break;
+        case END_SIZE_ITEM:
+            drawMenuItem(y, END_SIZE_ITEM, "Volee: ");
+            M5.Lcd.print(endSize);
+            break;
+        case BRIGHTNESS_ITEM:
+        {
+            drawMenuItem(y, BRIGHTNESS_ITEM, "Luminosite: ");
+            M5.Lcd.print(brightnessLevel + 1);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
+    if (scrollOffset > 0)
+    {
+        M5.Lcd.setTextColor(SILVER);
+        M5.Lcd.setTextSize(1);
+        M5.Lcd.setCursor(220, 35);
+        M5.Lcd.print("^");
+    }
+    if (scrollOffset + MAX_VISIBLE < MENU_ITEM_COUNT)
+    {
+        M5.Lcd.setTextColor(SILVER);
+        M5.Lcd.setTextSize(1);
+        M5.Lcd.setCursor(220, 105);
+        M5.Lcd.print("v");
+    }
 }
 
 bool SettingsMode::onPrimaryPress()
@@ -143,6 +184,11 @@ bool SettingsMode::onPrimaryPress()
         endSize++;
         if (endSize > 12)
             endSize = 2;
+        save();
+        return true;
+    case BRIGHTNESS_ITEM:
+        brightnessLevel = (brightnessLevel + 1) % 3;
+        M5.Display.setBrightness(getBrightness());
         save();
         return true;
     case RESET_ALL:
@@ -167,4 +213,16 @@ bool SettingsMode::onSecondaryPress()
 {
     currentItem = (MenuItem)((currentItem + 1) % MENU_ITEM_COUNT);
     return true;
+}
+
+uint8_t SettingsMode::getBrightness() const
+{
+    const uint8_t levels[] = {80, 160, 255};
+    return levels[brightnessLevel];
+}
+
+uint8_t SettingsMode::getDimBrightness() const
+{
+    const uint8_t levels[] = {1, 30, 60};
+    return levels[brightnessLevel];
 }
