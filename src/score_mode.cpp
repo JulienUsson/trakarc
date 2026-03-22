@@ -113,7 +113,7 @@ bool ScoreMode::onSecondaryPress()
 
 bool ScoreMode::onSecondaryLongPress()
 {
-    if (!arrowInProgress)
+    if (!arrowInProgress && totalScore > 0)
     {
         reset();
         return true;

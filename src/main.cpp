@@ -6,7 +6,7 @@
 #include "Arduino.h"
 
 const unsigned long DIM_TIMEOUT_MS = 3000;
-const unsigned long SLEEP_TIMEOUT_MS = 3000;
+const unsigned long SLEEP_TIMEOUT_MS = 2000;
 const unsigned long POWER_OFF_HOLD_MS = 2000;
 const unsigned long long AUTO_OFF_TIMEOUT_US = 1800ULL * 1000000ULL;
 
