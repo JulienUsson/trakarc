@@ -5,8 +5,8 @@
 #include "settings_mode.h"
 #include "Arduino.h"
 
-const unsigned long DIM_TIMEOUT_MS = 5000;
-const unsigned long SLEEP_TIMEOUT_MS = 10000;
+const unsigned long DIM_TIMEOUT_MS = 3000;
+const unsigned long SLEEP_TIMEOUT_MS = 3000;
 const unsigned long POWER_OFF_HOLD_MS = 2000;
 
 CounterMode counterMode;
@@ -189,7 +189,7 @@ void loop()
 
     unsigned long inactiveTime = millis() - lastActivity;
 
-    if (inactiveTime >= SLEEP_TIMEOUT_MS)
+    if (inactiveTime >= (SLEEP_TIMEOUT_MS + DIM_TIMEOUT_MS))
     {
         sleep();
     }
