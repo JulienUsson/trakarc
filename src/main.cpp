@@ -239,7 +239,7 @@ bool checkStartupReset()
     M5.Lcd.setTextColor(RED);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(20, 50);
-    M5.Lcd.println("Réinitialiser?");
+    M5.Lcd.println("Reinitialiser?");
 
     unsigned long start = millis();
     while (millis() - start < 1000)
@@ -255,7 +255,7 @@ bool checkStartupReset()
     M5.Lcd.setTextColor(GREEN);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(30, 50);
-    M5.Lcd.println("Réinitialisé!");
+    M5.Lcd.println("Reinitialise!");
     delay(300);
 
     return true;
