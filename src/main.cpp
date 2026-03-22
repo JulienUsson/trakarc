@@ -8,6 +8,7 @@
 const unsigned long DIM_TIMEOUT_MS = 3000;
 const unsigned long SLEEP_TIMEOUT_MS = 3000;
 const unsigned long POWER_OFF_HOLD_MS = 2000;
+const unsigned long long AUTO_OFF_TIMEOUT_US = 1800ULL * 1000000ULL;
 
 CounterMode counterMode;
 ScoreMode scoreMode;
@@ -276,7 +277,15 @@ void sleep()
     M5.Display.waitDisplay();
     gpio_wakeup_enable(GPIO_NUM_37, GPIO_INTR_LOW_LEVEL);
     esp_sleep_enable_gpio_wakeup();
+    esp_sleep_enable_timer_wakeup(AUTO_OFF_TIMEOUT_US);
     esp_light_sleep_start();
+
+    esp_sleep_wakeup_cause_t cause = esp_sleep_get_wakeup_cause();
+    if (cause == ESP_SLEEP_WAKEUP_TIMER)
+    {
+        M5.Power.powerOff();
+    }
+
     while (digitalRead(GPIO_NUM_37) == LOW)
     {
         delay(10);
