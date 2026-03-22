@@ -52,6 +52,16 @@ bool CounterMode::onPrimaryLongPress()
     return incrementCounter(settingsMode->getEndSize());
 }
 
+bool CounterMode::onSecondaryLongPress()
+{
+    if (counter == 0)
+    {
+        return false;
+    }
+    reset();
+    return true;
+}
+
 void CounterMode::reset()
 {
     counter = 0;

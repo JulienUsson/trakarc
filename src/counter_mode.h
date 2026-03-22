@@ -13,6 +13,7 @@ public:
     void draw() override;
     bool onPrimaryPress() override;
     bool onPrimaryLongPress() override;
+    bool onSecondaryLongPress() override;
     bool incrementCounter(unsigned int value);
     void reset() override;
     const char *key() override { return "A"; }

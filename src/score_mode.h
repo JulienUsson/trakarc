@@ -14,6 +14,7 @@ public:
     bool onPrimaryPress() override;
     bool onPrimaryHoldRepeat() override;
     bool onSecondaryPress() override;
+    bool onSecondaryLongPress() override;
     void onEnter() override;
     void reset() override;
     const char *key() override { return "B"; }

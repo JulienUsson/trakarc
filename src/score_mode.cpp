@@ -111,6 +111,16 @@ bool ScoreMode::onSecondaryPress()
     return false;
 }
 
+bool ScoreMode::onSecondaryLongPress()
+{
+    if (!arrowInProgress)
+    {
+        reset();
+        return true;
+    }
+    return false;
+}
+
 void ScoreMode::onEnter()
 {
     currentArrow = 0;

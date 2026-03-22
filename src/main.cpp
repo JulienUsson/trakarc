@@ -175,6 +175,14 @@ void loop()
         }
     }
 
+    if (M5.BtnB.wasHold())
+    {
+        if (modes[currentModeIndex]->onSecondaryLongPress())
+        {
+            drawScreen();
+        }
+    }
+
     if (M5.BtnPWR.wasClicked())
     {
         modes[currentModeIndex]->onExit();
