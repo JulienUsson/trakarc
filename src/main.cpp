@@ -25,6 +25,7 @@ void saveMode(int mode);
 void sleep();
 void drawModeLabel();
 void drawBatteryLevel();
+bool checkStartupReset();
 
 void drawModeLabel()
 {
@@ -99,14 +100,22 @@ void setup()
     M5.Lcd.println("Trakark");
     delay(500);
 
-    drawScreen();
-    lastActivity = millis();
+    if (checkStartupReset())
+    {
+        for (int i = 0; i < MODE_COUNT; i++)
+        {
+            modes[i]->reset();
+        }
+    }
 
     while (digitalRead(GPIO_NUM_35) == LOW)
     {
         delay(10);
     }
     M5.update();
+
+    drawScreen();
+    lastActivity = millis();
 }
 
 void loop()
@@ -217,6 +226,39 @@ void saveMode(int mode)
     prefs.begin("app", false);
     prefs.putInt("mode", mode);
     prefs.end();
+}
+
+bool checkStartupReset()
+{
+    if (digitalRead(GPIO_NUM_35) != LOW)
+    {
+        return false;
+    }
+
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setTextColor(RED);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(20, 50);
+    M5.Lcd.println("Réinitialiser?");
+
+    unsigned long start = millis();
+    while (millis() - start < 1000)
+    {
+        if (digitalRead(GPIO_NUM_35) != LOW)
+        {
+            return false;
+        }
+        delay(10);
+    }
+
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(30, 50);
+    M5.Lcd.println("Réinitialisé!");
+    delay(300);
+
+    return true;
 }
 
 void sleep()
